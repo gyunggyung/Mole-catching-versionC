@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <string>
-#include "input_output.h"
+#include "input_output1.h"
 struct gamers {
 	char *name;
 	int point;
@@ -46,9 +46,9 @@ int ReadFile(struct gamers **s) {//메인에서 top10gamers 구조체동적할당 받아오기,
 }
 
 
-void user_input_output(char name, int points, struct gamers **s, int top)//게임이 끝나고 점수를 파일에 저장
+void user_input_output(char name, int points, struct gamers **s, int k)//게임이 끝나고 점수를 파일에 저장
 {
-	int i = 0, u, p, t;
+	int i = 0, u, p, t, top;
 	char playername[101];
 	struct gamers sx;
 	char fn[] = "TOP10.txt";
@@ -105,20 +105,24 @@ void user_input_output(char name, int points, struct gamers **s, int top)//게임�
 		cout << "\n\n아무키나 입력하세요\n";
 		cin.get();
 		*/
-	printf("원하는 기능을 입력하시오. 0:종료, 1: 이름 검색, 2: top10점수 검색 ");
-	scanf("%d\n", &p);
-	if (p == 1)
-		intop(top, s);
-	if(p == 2)
-		toprank(top, s);
+	while (1){
+		printf("원하는 기능을 입력하시오. 0:종료, 1: 이름 검색, 2: top10점수 검색 \n");
+		scanf("%d\n", &p);
+		if (p == 1)
+			intop(top, s);
+		else if (p == 2)
+			toprank(top, s);
+		else
+			break;
+	}
 }
 
 
-void intop(int top, struct gamers **s) {
+void intop(int k, struct gamers **s) {
 	char Name[100];
 	FILE *fp;
 	char fn[] = "TOP10.txt";
-	int i;
+	int i, top;
 
 	printf("What's your nickname???: ");
 	gets(Name);
@@ -133,8 +137,8 @@ void intop(int top, struct gamers **s) {
 	fclose(fp);
 }
 
-void toprank(int top, struct gamers **s) {
-	int n, i;
+void toprank(int k, struct gamers **s) {
+	int n, i, top;
 
 	scanf("%d", &n);
 

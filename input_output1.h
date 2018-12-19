@@ -1,8 +1,5 @@
 #ifndef INPUT_OUTPUT_H
 #define INPUT_OUTPUT_H
-#include<string>
-#include<iostream>
-#include<iomanip>
 #include<fstream> //파일입출력을 위한 헤더파일
 #include <stdio.h>
 #include <string.h>

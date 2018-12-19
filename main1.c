@@ -1,10 +1,11 @@
+#pragma once
 #pragma warning(disable: 4996)
 #include <Windows.h>
 #include <time.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include "input_output.h"
+#include "input_output1.h"
 #define X_MAX 26	//가로칸수
 #define SPACE 25
 int node_down(int b);
@@ -14,9 +15,10 @@ char map[60][X_MAX];
 char obstacle = 'O'; //노드
 int y = 18, x = 9;
 int	 a = 0;
+int extern top;
 int main()
 {
-	int top, i;
+	int i;
 	struct gamers **top10;
 	top10 = (struct gamers**)calloc(10 , sizeof(struct gamers*));
 	top = ReadFile(top10);
