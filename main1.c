@@ -6,13 +6,13 @@
 #include <stdio.h>
 #include <string.h>
 #include "input_output1.h"
-#define X_MAX 26	//°¡·ÎÄ­¼ö
+#define X_MAX 26	//ê°€ë¡œì¹¸ìˆ˜
 #define SPACE 25
 int node_down(int b);
-void clearscreen();  //È­¸é ÇÃ¸®Ä¿ ¿¹¹æ
+void clearscreen();  //í™”ë©´ í”Œë¦¬ì»¤ ì˜ˆë°©
 
 char map[60][X_MAX];
-char obstacle = 'O'; //³ëµå
+char obstacle = 'O'; //ë…¸ë“œ
 int y = 18, x = 9;
 int	 a = 0;
 int extern top;
@@ -20,14 +20,18 @@ int main()
 {
 	int i;
 	struct gamers **top10;
-	top10 = (struct gamers**)calloc(10 , sizeof(struct gamers*));
-	top = ReadFile(top10);
+	/*top10 = (struct gamers**)calloc(10 , sizeof(struct gamers*));
+	for (i = 0; i < 10; i++) {
+		top10[i] = (struct gamers*)malloc(sizeof(struct gamers) * 10);
+	}*/
+
+	top = ReadFile(top10, "TOP10.txt");
 
 	int c = rand() % (X_MAX - 1) + 3;
-	int	b = rand() % (X_MAX - 1) + 3;			//³ëµå ÁÂÇ¥
+	int	b = rand() % (X_MAX - 1) + 3;			//ë…¸ë“œ ì¢Œí‘œ
 	char name[1000];
 	int deathcounter = 0;
-	//¸Ê »ý¼º
+	//ë§µ ìƒì„±
 	for (int i = 0; i < 20; ++i) {
 		for (int j = 0; j < X_MAX; ++j) {
 			map[i + SPACE][0] = '|';
@@ -39,9 +43,9 @@ int main()
 	srand(time(0));
 
 	int points = 0;
-	int speed = 100;					//³ëµå, À¯Àú ½ºÇÇµå
-	int cashcheck = 0;					//Ä³½Ã
-	int cashpickedup = 0;				//µ· ¸ÔÀ¸¸é ++
+	int speed = 100;					//ë…¸ë“œ, ìœ ì € ìŠ¤í”¼ë“œ
+	int cashcheck = 0;					//ìºì‹œ
+	int cashpickedup = 0;				//ëˆ ë¨¹ìœ¼ë©´ ++
 	int startup = 1;
 	int point = 0;
 
@@ -49,20 +53,20 @@ int main()
 	char car = 'X';
 	map[y + SPACE][x] = car;
 
-	//PlaySound(TEXT("123.wav"), NULL, SND_FILENAME | SND_ASYNC );  //À½¾Ç Ãâ·Â ÇÏ¸é¼­ ³»¿ëÁøÇà 
-	//ÇÏÁö¸¸ ½ÇÆÐ
+	//PlaySound(TEXT("123.wav"), NULL, SND_FILENAME | SND_ASYNC );  //ìŒì•… ì¶œë ¥ í•˜ë©´ì„œ ë‚´ìš©ì§„í–‰ 
+	//í•˜ì§€ë§Œ ì‹¤íŒ¨
 
 	for (;;) {
-		clearscreen(); //È­¸é ÇÃ¸®Ä¿ ¿¹¹æ
-					   //ÇÃ·¹ÀÌ¾î
+		clearscreen(); //í™”ë©´ í”Œë¦¬ì»¤ ì˜ˆë°©
+					   //í”Œë ˆì´ì–´
 		map[y + SPACE][x] = 'X';
 		map[y + SPACE][x + 1] = '|';
 		map[y + SPACE][x - 1] = '|';
 
-		//³ëµå ³»·Á¿À±â
+		//ë…¸ë“œ ë‚´ë ¤ì˜¤ê¸°
 		b = node_down(b);
 
-		//È­¸é Ãâ·Â
+		//í™”ë©´ ì¶œë ¥
 		for (int i = 0; i < 20; ++i) {
 			for (int j = 0; j < X_MAX; ++j) {
 				printf("%c", map[i + SPACE][j]);
@@ -70,34 +74,34 @@ int main()
 					printf("\n");
 				}
 			}
-		}//Á¡¼ö Ãâ·Â
+		}//ì ìˆ˜ ì¶œë ¥
 		point = deathcounter + (cashpickedup * 10);
 		printf("Points: %d  Deathcounter: %d \n", point, deathcounter);
-		printf("\nDeathcounter°¡ 2000ÀÌ µÇ¸é Á¾·áµÊ´Ï´Ù. ");
+		printf("\nDeathcounterê°€ 2000ì´ ë˜ë©´ ì¢…ë£Œë¨ë‹ˆë‹¤. ");
 
-		//°ÔÀÓÁ¾·á
+		//ê²Œìž„ì¢…ë£Œ
 		if (deathcounter == 2000)
 		{
-			printf("\n\nÀÌ¸§À» ÀÔ·ÂÇÏ¼¼¿ä\n\n");
+			printf("\n\nì´ë¦„ì„ ìž…ë ¥í•˜ì„¸ìš”\n\n");
 			scanf("%s", name);
 			system("cls");
-			user_input_output(name, point, top10, top);//ÆÄÀÏ¿¡ ÀúÀå
+			user_input_output(name, point, top10, top);//íŒŒì¼ì— ì €ìž¥
 													   //cin.get();
 			return 0;
 		}
 
 		if (startup) {
-			getchar(); //Å° ¹Þ±â
+			getchar(); //í‚¤ ë°›ê¸°
 			startup = 0;
 		}
 
-		//¿ÞÂÊ ÀÌµ¿
+		//ì™¼ìª½ ì´ë™
 		if (GetAsyncKeyState(VK_LEFT)) {
 			if (map[y + SPACE][x - 3] == obstacle) {
-				goto lost;		//´êÀ»½Ã
+				goto lost;		//ë‹¿ì„ì‹œ
 			}
 			else if (map[y + SPACE][x - 3] != '|') {
-				//¸Ê ¹ÛÀ¸·Î ³ª°¡Áö ¾ÊÀ»¶§ Ãâ·Â
+				//ë§µ ë°–ìœ¼ë¡œ ë‚˜ê°€ì§€ ì•Šì„ë•Œ ì¶œë ¥
 				map[y + SPACE][x] = ' ';
 				map[y + SPACE][x + 1] = ' ';
 				map[y + SPACE][x - 1] = ' ';
@@ -110,13 +114,13 @@ int main()
 			}
 		}
 
-		//¿À¸¥ÂÊ ÀÌµ¿
+		//ì˜¤ë¥¸ìª½ ì´ë™
 		if (GetAsyncKeyState(VK_RIGHT)) {
 			if (map[y + SPACE][x + 3] == obstacle) {
-				goto lost;		//´êÀ»½Ã
+				goto lost;		//ë‹¿ì„ì‹œ
 			}
 			else if (map[y + SPACE][x + 3] != '|') {
-				//¸Ê ¹ÛÀ¸·Î ³ª°¡Áö ¾ÊÀ»¶§ Ãâ·Â
+				//ë§µ ë°–ìœ¼ë¡œ ë‚˜ê°€ì§€ ì•Šì„ë•Œ ì¶œë ¥
 				map[y + SPACE][x] = ' ';
 				map[y + SPACE][x + 1] = ' ';
 				map[y + SPACE][x - 1] = ' ';
@@ -129,7 +133,7 @@ int main()
 			}
 		}
 
-		//³ëµå°ú ´êÀ»¶§
+		//ë…¸ë“œê³¼ ë‹¿ì„ë•Œ
 		if (map[y + SPACE][x] == obstacle || map[y + SPACE][x - 1] == obstacle || map[y + SPACE][x + 1] == obstacle) {
 		lost:
 			++cashpickedup;
@@ -137,7 +141,7 @@ int main()
 
 		deathcounter++;
 
-		//¼Óµµ »ó½Â
+		//ì†ë„ ìƒìŠ¹
 		if (deathcounter == 100 || deathcounter == 200 || deathcounter == 300 || deathcounter == 400 || deathcounter == 500) {
 			speed -= 18;
 		}
@@ -152,16 +156,16 @@ int main()
 }
 void clearscreen()
 {
-	HANDLE hOut;	//void Æ÷ÀÎÅÍ Á¤µµ·Î »ý°¢
-	COORD Position;	//ÁÂÇ¥ ¹Þ´Â ±¸Á¶Ã¼
+	HANDLE hOut;	//void í¬ì¸í„° ì •ë„ë¡œ ìƒê°
+	COORD Position;	//ì¢Œí‘œ ë°›ëŠ” êµ¬ì¡°ì²´
 
-	hOut = GetStdHandle(STD_OUTPUT_HANDLE);		//¾²·¹±â °ª
+	hOut = GetStdHandle(STD_OUTPUT_HANDLE);		//ì“°ë ˆê¸° ê°’
 
 	Position.X = 0;
 	Position.Y = 0;
-	SetConsoleCursorPosition(hOut, Position);	//Ä¿¼­ ÀÌµ¿¿ë
-												//ÇÚµé °ªÀ» Ã¹¹øÀç·Î ¹Þ°í, µÎ¹øÂ°·Î Ä¿¼­¸¦ ÀÌµ¿ÇÏ°íÀÚ ÇÏ´Â ÁÂÇ¥°ªÀÇ Á¤º¸¸¦ ´ãÀº ±¸Á¶Ã¼ COORD¸¦ ¹Þ´Â´Ù.
-}	//È­¸é ±ôºýÀÌ´Â°Å ¿¹¹æ
+	SetConsoleCursorPosition(hOut, Position);	//ì»¤ì„œ ì´ë™ìš©
+												//í•¸ë“¤ ê°’ì„ ì²«ë²ˆìž¬ë¡œ ë°›ê³ , ë‘ë²ˆì§¸ë¡œ ì»¤ì„œë¥¼ ì´ë™í•˜ê³ ìž í•˜ëŠ” ì¢Œí‘œê°’ì˜ ì •ë³´ë¥¼ ë‹´ì€ êµ¬ì¡°ì²´ COORDë¥¼ ë°›ëŠ”ë‹¤.
+}	//í™”ë©´ ê¹œë¹¡ì´ëŠ”ê±° ì˜ˆë°©
 
 int node_down(int b)
 {
@@ -173,14 +177,14 @@ int node_down(int b)
 		map[a - j + SPACE][b - 1] = ' ';
 	}
 	++a;
-	//³ëµå ¸ðÇü
+	//ë…¸ë“œ ëª¨í˜•
 	for (int j = 0; j < node_num; j++)
 	{
 		map[a - j + SPACE][b] = obstacle;
 		map[a - j + SPACE][b + 1] = obstacle;
 		map[a - j + SPACE][b - 1] = obstacle;
 	}
-	//´Ù ¿òÁ÷ÀÌ¸é »õ·Î ½ÃÀÛ
+	//ë‹¤ ì›€ì§ì´ë©´ ìƒˆë¡œ ì‹œìž‘
 	if (a > 28) {
 		a = 0;
 		b = rand() % 15 + 2;

@@ -1,20 +1,15 @@
-#include <stdio.h>
-#include <string>
 #include "input_output1.h"
-struct gamers {
-	char *name;
-	int point;
-};
-int ReadFile(struct gamers **s) {//¸ŞÀÎ¿¡¼­ top10gamers ±¸Á¶Ã¼µ¿ÀûÇÒ´ç ¹Ş¾Æ¿À±â, °ÔÀÓ ½ÇÇàÀü¿¡ top10gamers ÀÚ·á ºÒ·Á¿Í ±¸Á¶Ã¼¿¡ ÀúÀå
+
+int ReadFile(struct gamers **s, char fn[30]) {//ë©”ì¸ì—ì„œ top10gamers êµ¬ì¡°ì²´ë™ì í• ë‹¹ ë°›ì•„ì˜¤ê¸°, ê²Œì„ ì‹¤í–‰ì „ì— top10gamers ìë£Œ ë¶ˆë ¤ì™€ êµ¬ì¡°ì²´ì— ì €ì¥
 	int i=0, u, p, t;
 	char k[101];
 	struct gamers ss, sx;
-	char fn[] = "TOP10.txt";
+	//char fn[] = "TOP10.txt";
 
 	s = (struct gamers**)malloc(sizeof(struct gamers*) * 10);
 	FILE *fp = fopen(fn, "r");
 	while (!feof(fp)) {
-		if (i == 10) {//10¸í ´Ù Ã¤¿ì¸é ³¡
+		if (i == 10) {//10ëª… ë‹¤ ì±„ìš°ë©´ ë
 			break;
 		}
 		s[i] = (struct gamers*)malloc(sizeof(struct gamers));
@@ -42,20 +37,20 @@ int ReadFile(struct gamers **s) {//¸ŞÀÎ¿¡¼­ top10gamers ±¸Á¶Ã¼µ¿ÀûÇÒ´ç ¹Ş¾Æ¿À±â,
 
 	fclose(fp);
 
-	return i;//ÇöÀç ±â·Ï¿¡ ÀúÀåµÈ ÇÃ¿¡ÀÌ¾î ¼ö(0<=i<=10) ¾Æ·¡ ÇÔ¼öÀÎÀÚ Áß top¿¡ ÇØ´ç
+	return i;//í˜„ì¬ ê¸°ë¡ì— ì €ì¥ëœ í”Œì—ì´ì–´ ìˆ˜(0<=i<=10) ì•„ë˜ í•¨ìˆ˜ì¸ì ì¤‘ topì— í•´ë‹¹
 }
 
 
-void user_input_output(char name, int points, struct gamers **s, int k)//°ÔÀÓÀÌ ³¡³ª°í Á¡¼ö¸¦ ÆÄÀÏ¿¡ ÀúÀå
+void user_input_output(char name, int points, struct gamers **s, int k)//ê²Œì„ì´ ëë‚˜ê³  ì ìˆ˜ë¥¼ íŒŒì¼ì— ì €ì¥
 {
-	int i = 0, u, p, t, top;
+	int i = 0, u, p, t, top=10;
 	char playername[101];
 	struct gamers sx;
 	char fn[] = "TOP10.txt";
 	FILE *fp;
 
-	gets(playername);//gets°¡ µÇ°Ô ÇØÁÖ¼¼¿ä.
-	for (t = 0; t < top; ++t) {//ÇöÀç ±â·Ïº¸´Ù ³ôÀº Á¡¼öÀÏ °æ¿ì
+	gets(playername);//getsê°€ ë˜ê²Œ í•´ì£¼ì„¸ìš”.
+	for (t = 0; t < top; ++t) {//í˜„ì¬ ê¸°ë¡ë³´ë‹¤ ë†’ì€ ì ìˆ˜ì¼ ê²½ìš°
 		if (s[t]->point < points) {
 			for (u = 10; t < u; --u) {
 				sx.name = (char*)malloc((strlen(s[u - 1]->name) + 1) * sizeof(char));
@@ -67,46 +62,46 @@ void user_input_output(char name, int points, struct gamers **s, int k)//°ÔÀÓÀÌ 
 			s[t]->point = points;
 			break;
 		}
-		if (top < 10 && top == t) {//³ôÀº Á¡¼ö´Â ¾Æ´ÏÁö¸¸ top10¾È¿¡ ÀÖ´Â °æ¿ì(±â·Ï¿¡ ÀúÀåµÈ topÀÌ 10¸í ¹Ì¸¸ÀÏ °æ¿ì)
+		if (top < 10 && top == t) {//ë†’ì€ ì ìˆ˜ëŠ” ì•„ë‹ˆì§€ë§Œ top10ì•ˆì— ìˆëŠ” ê²½ìš°(ê¸°ë¡ì— ì €ì¥ëœ topì´ 10ëª… ë¯¸ë§Œì¼ ê²½ìš°)
 			strcpy(s[t]->name, playername);
 			s[t]->point = points;
 		}
-		if (t == 10)//top¿¡¼­ ¹ş¾î³­ °æ¿ì
+		if (t == 10)//topì—ì„œ ë²—ì–´ë‚œ ê²½ìš°
 			printf("you are loser lol\n");
 	}
 
-	fp = fopen(fn, "w");//º¯°æµÈ ³»¿ëÀ» ÆÄÀÏ¿¡ ÀúÀå
+	fp = fopen(fn, "w");//ë³€ê²½ëœ ë‚´ìš©ì„ íŒŒì¼ì— ì €ì¥
 	for (i = 0; ; ++i) {
 		fprintf(fp, "%s %d\n", s[i]->name, s[i]->point);
 		fclose(fp);
 	}
 	fclose(fp);
 	/*
-		ifstream logFile2("log.txt");			   //ÆÄÀÏ ÀĞ±â
-		ofstream  logFile("log.txt", ios::app);    //ÆÄÀÏ ¾²±â, ³»¿ë Ãß°¡
+		ifstream logFile2("log.txt");			   //íŒŒì¼ ì½ê¸°
+		ofstream  logFile("log.txt", ios::app);    //íŒŒì¼ ì“°ê¸°, ë‚´ìš© ì¶”ê°€
 		string Rname, stop;
-		logFile << name << "   " << point << endl; //ÆÄÀÏ¿¡ ÀÌ¸§, Æ÷ÀÎÆ® ¾²±â
+		logFile << name << "   " << point << endl; //íŒŒì¼ì— ì´ë¦„, í¬ì¸íŠ¸ ì“°ê¸°
 		cout << "gamers name and point \n\n";
 		while (1)
 		{
-			logFile2 >> Rname;					//ÆÄÀÏ ÀĞ±â
-			if (stop == Rname)					//Áßº¹ Á¦°Å
+			logFile2 >> Rname;					//íŒŒì¼ ì½ê¸°
+			if (stop == Rname)					//ì¤‘ë³µ ì œê±°
 				break;
-			cout << setw(12) << Rname << "   ";	//ÀĞÀº ³»¿ë Ãâ·Â
+			cout << setw(12) << Rname << "   ";	//ì½ì€ ë‚´ìš© ì¶œë ¥
 			logFile2 >> Rname;
 			cout << Rname << endl;
 
 			stop = Rname;
 		}
 
-		//»ç¿ëÀÌ ³¡³­ µÚ ÆÄÀÏÀ» ´İ¾ÆÁİ´Ï´Ù.
+		//ì‚¬ìš©ì´ ëë‚œ ë’¤ íŒŒì¼ì„ ë‹«ì•„ì¤ë‹ˆë‹¤.
 		logFile2.close();
 		logFile.close();
-		cout << "\n\n¾Æ¹«Å°³ª ÀÔ·ÂÇÏ¼¼¿ä\n";
+		cout << "\n\nì•„ë¬´í‚¤ë‚˜ ì…ë ¥í•˜ì„¸ìš”\n";
 		cin.get();
 		*/
 	while (1){
-		printf("¿øÇÏ´Â ±â´ÉÀ» ÀÔ·ÂÇÏ½Ã¿À. 0:Á¾·á, 1: ÀÌ¸§ °Ë»ö, 2: top10Á¡¼ö °Ë»ö \n");
+		printf("ì›í•˜ëŠ” ê¸°ëŠ¥ì„ ì…ë ¥í•˜ì‹œì˜¤. 0:ì¢…ë£Œ, 1: ì´ë¦„ ê²€ìƒ‰, 2: top10ì ìˆ˜ ê²€ìƒ‰ \n");
 		scanf("%d\n", &p);
 		if (p == 1)
 			intop(top, s);
@@ -122,14 +117,16 @@ void intop(int k, struct gamers **s) {
 	char Name[100];
 	FILE *fp;
 	char fn[] = "TOP10.txt";
-	int i, top;
+	int i, top=0;
 
 	printf("What's your nickname???: ");
 	gets(Name);
 
+	fp = fopen(fn, "r");//ë³€ê²½ëœ ë‚´ìš©ì„ íŒŒì¼ì— ì €ì¥
+
 	for (i = 0; i < top; ++i) {
 		if (strcmp(s[i]->name, Name) == 0)
-			printf("%s %d %dÀ§\n", s[i]->name, s[i]->point, i + 1);
+			printf("%s %d %dìœ„\n", s[i]->name, s[i]->point, i + 1);
 	}
 	if (i == top)
 		printf("your name not in TOP10 LOL\n");
@@ -138,9 +135,9 @@ void intop(int k, struct gamers **s) {
 }
 
 void toprank(int k, struct gamers **s) {
-	int n, i, top;
+	int n, i=0, top;
 
 	scanf("%d", &n);
 
-	printf("%dÀ§ Á¡¼ö´Â %s %dÁ¡\n", i + 1, s[i]->name, s[i]->point);
+	printf("%dìœ„ ì ìˆ˜ëŠ” %s %dì \n", i + 1, s[i]->name, s[i]->point);
 }
